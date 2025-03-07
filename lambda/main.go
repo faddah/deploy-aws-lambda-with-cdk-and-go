@@ -16,8 +16,35 @@ func newApp(id string) *App {
 	return &App{id: id}
 }
 
-func (app *App) Handler() error {
-	return nil
+func (app *App) Handler(request events.APIGatewayProxyRequest) (events.APIGatewayProxyResponse, error) {
+	responseBody := map[string]string{
+		"message": "OH HAI! You have this route & Lambda API functions with the ID: " + app.id,
+	}
+
+	responseJSON, err := json.Marshal(responseBody)
+	if err != nil {
+		return events.APIGatewayProxyResponse{
+			Body: `{"error": "internal server error: "}` + err.Error(),
+			Headers: map[string]string{
+				"Content-Type": "application/json",
+			},
+			StatusCode: http.StatusInternalServerError,
+		}, nil
+	}
+
+	response := events.APIGatewayProxyResponse{
+		Body: string(responseJSON),
+		Headers: map[string]string{
+			"Content-Type":                     "text/plain",
+			"Access-Control-Allow-Origin":      "*",
+			"Access-Control-Allow-Methods":     "GET, POST, PATCH, PUT, DELETE, OPTIONS",
+			"Access-Control-Allow-Headers":     "Content-Type, Authorization, X-Requested-With",
+			"Access-Control-Allow-Credentials": "true",
+		},
+		StatusCode: http.StatusOK,
+	}
+
+	return response, nil
 }
 
 func main() {
