@@ -35,7 +35,7 @@ func (app *App) Handler(request events.APIGatewayProxyRequest) (events.APIGatewa
 	response := events.APIGatewayProxyResponse{
 		Body: string(responseJSON),
 		Headers: map[string]string{
-			"Content-Type":                     "text/plain",
+			"Content-Type":                     "application/json",
 			"Access-Control-Allow-Origin":      "*",
 			"Access-Control-Allow-Methods":     "GET, POST, PUT, DELETE, OPTIONS",
 			"Access-Control-Allow-Headers":     "Content-Type, Authorization, X-Requested-With",
